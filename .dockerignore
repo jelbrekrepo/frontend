@@ -1,0 +1,30 @@
+# source files
+/api/
+/components/
+/pages/
+/redux/
+/static/
+/styles/
+
+# node modules
+node_modules
+
+# markdown files
+*.md
+!README.md
+!LICENSE
+
+# circleci config
+.circleci
+
+# environment/secrets
+.env
+
+# logs
+*.log
+
+# dist
+!dist
+
+# next
+!.next
