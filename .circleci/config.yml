@@ -2,7 +2,7 @@ version: 2.1
 executors:
   docker-publisher:
     environment:
-      IMAGE_NAME: jelbrek/backend
+      IMAGE_NAME: jelbrek/frontend
     docker:
       - image: circleci/node:12-stretch
 jobs:
