@@ -1,7 +1,9 @@
 import fetch from 'isomorphic-unfetch'
 import jsHttpCookie from 'cookie'
+import getConfig from 'next/config'
+const { BASE_URL } = getConfig().publicRuntimeConfig
+
 export default class JelbrekAPI {
-  BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
   constructor(ip, req) {
     this.ip = ip
     if (req && req.headers) {
@@ -21,7 +23,7 @@ export default class JelbrekAPI {
   }
 
   async getPackages() {
-    const res = await fetch(`${this.BASE_URL}/package`, {
+    const res = await fetch(`${BASE_URL}/package`, {
       credentials: 'include',
       headers: {
         Authorization: this.token,
@@ -32,7 +34,7 @@ export default class JelbrekAPI {
     return json.packages
   }
   async getFeaturedPackages() {
-    const res = await fetch(`${this.BASE_URL}/package/featured`, {
+    const res = await fetch(`${BASE_URL}/package/featured`, {
       credentials: 'include',
       headers: {
         Authorization: this.token,
@@ -44,7 +46,7 @@ export default class JelbrekAPI {
   }
 
   async getPackage(id) {
-    const res = await fetch(`${this.BASE_URL}/package/${id}`, {
+    const res = await fetch(`${BASE_URL}/package/${id}`, {
       credentials: 'include',
       headers: {
         Authorization: this.token,
@@ -55,22 +57,19 @@ export default class JelbrekAPI {
     return json.package
   }
   async getPackageVersion(id, version) {
-    const res = await fetch(
-      `${this.BASE_URL}/package/${id}/versions/${version}`,
-      {
-        credentials: 'include',
-        headers: {
-          Authorization: this.token,
-          'X-Forwarded-For': this.ip
-        }
+    const res = await fetch(`${BASE_URL}/package/${id}/versions/${version}`, {
+      credentials: 'include',
+      headers: {
+        Authorization: this.token,
+        'X-Forwarded-For': this.ip
       }
-    )
+    })
     const json = await res.json()
     return json.version
   }
 
   async register(username, password, email) {
-    const res = await fetch(`${this.BASE_URL}/auth/register`, {
+    const res = await fetch(`${BASE_URL}/auth/register`, {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
@@ -87,7 +86,7 @@ export default class JelbrekAPI {
     return json
   }
   async login(username, password) {
-    const res = await fetch(`${this.BASE_URL}/auth/login`, {
+    const res = await fetch(`${BASE_URL}/auth/login`, {
       credentials: 'include',
       headers: {
         'Content-Type': 'application/json',
@@ -103,7 +102,7 @@ export default class JelbrekAPI {
     return json
   }
   async verify(token) {
-    const res = await fetch(`${this.BASE_URL}/auth/verify?token=${token}`, {
+    const res = await fetch(`${BASE_URL}/auth/verify?token=${token}`, {
       credentials: 'include',
       headers: {
         Authorization: this.token,
@@ -116,7 +115,7 @@ export default class JelbrekAPI {
   async uploadPackageIcon(pkg, file) {
     let formData = new FormData()
     formData.append('file', file)
-    const res = await fetch(`${this.BASE_URL}/package/${pkg}/icon`, {
+    const res = await fetch(`${BASE_URL}/package/${pkg}/icon`, {
       credentials: 'include',
       headers: {
         Authorization: this.token,
@@ -132,7 +131,7 @@ export default class JelbrekAPI {
     let formData = new FormData()
     formData.append('file', file)
     const res = await fetch(
-      `${this.BASE_URL}/package/${pkg}/versions/${version}/upload`,
+      `${BASE_URL}/package/${pkg}/versions/${version}/upload`,
       {
         credentials: 'include',
         headers: {
@@ -150,7 +149,7 @@ export default class JelbrekAPI {
     if (typeof values.latestVersion !== 'string') {
       values.latestVersion = values.latestVersion.id
     }
-    const res = await fetch(`${this.BASE_URL}/package/${pkg}`, {
+    const res = await fetch(`${BASE_URL}/package/${pkg}`, {
       credentials: 'include',
       headers: {
         Authorization: this.token,
@@ -164,34 +163,28 @@ export default class JelbrekAPI {
     return json
   }
   async createVersion(pkg, version) {
-    const res = await fetch(
-      `${this.BASE_URL}/package/${pkg}/versions/${version}`,
-      {
-        credentials: 'include',
-        headers: {
-          Authorization: this.token,
-          'X-Forwarded-For': this.ip
-        },
-        method: 'PUT'
-      }
-    )
+    const res = await fetch(`${BASE_URL}/package/${pkg}/versions/${version}`, {
+      credentials: 'include',
+      headers: {
+        Authorization: this.token,
+        'X-Forwarded-For': this.ip
+      },
+      method: 'PUT'
+    })
     const json = await res.json()
     return json
   }
   async editVersion(pkg, version, values) {
-    const res = await fetch(
-      `${this.BASE_URL}/package/${pkg}/versions/${version}`,
-      {
-        credentials: 'include',
-        headers: {
-          Authorization: this.token,
-          'Content-Type': 'application/json',
-          'X-Forwarded-For': this.ip
-        },
-        method: 'PATCH',
-        body: JSON.stringify(values)
-      }
-    )
+    const res = await fetch(`${BASE_URL}/package/${pkg}/versions/${version}`, {
+      credentials: 'include',
+      headers: {
+        Authorization: this.token,
+        'Content-Type': 'application/json',
+        'X-Forwarded-For': this.ip
+      },
+      method: 'PATCH',
+      body: JSON.stringify(values)
+    })
     const json = await res.json()
     return json
   }

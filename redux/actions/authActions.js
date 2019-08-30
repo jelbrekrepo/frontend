@@ -1,6 +1,7 @@
 import { AUTHENTICATE, DEAUTHENTICATE } from '../actionTypes'
 import fetch from 'isomorphic-unfetch'
-const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
+import getConfig from 'next/config'
+const { BASE_URL } = getConfig().publicRuntimeConfig
 
 const logout = () => {
   return dispatch => {

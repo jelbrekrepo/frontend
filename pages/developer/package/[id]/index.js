@@ -9,6 +9,9 @@ import dynamic from 'next/dynamic'
 import '../../../../styles/index.css'
 import initialize from '../../../../api/initialize'
 
+import getConfig from 'next/config'
+const { BASE_URL } = getConfig().publicRuntimeConfig
+
 const DeveloperPackageForm = dynamic(
   () => import('../../../../components/DeveloperPackageForm'),
   {
@@ -97,7 +100,6 @@ export default class DeveloperPackage extends PureComponent {
   }
   render() {
     const { pkg } = this.props
-    const BASE_URL = process.env.BASE_URL || 'http://localhost:3000'
 
     return (
       <Layout>
